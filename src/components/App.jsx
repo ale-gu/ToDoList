@@ -1,25 +1,19 @@
 import React, { useState } from "react";
-//import Item from "./Item.jsx";
+import ToDoItem from "./ToDoItem.jsx";
+import InputArea from "./InputArea.jsx";
 
 function App() {
-  const [inputText, setInputText] = useState("");
   const [items, setItems] = useState([]);
 
-  function handleChange(event) {
-    const newValue = event.target.value;
-    setInputText(newValue);
-  }
-  function addItem() {
+  function addItem(inputText) {
     setItems(prevItems => [...prevItems, inputText]);
-    setInputText("");
   }
-
-  const [isOver, setIsOver] = React.useState(false);
-  function over() {
-    setIsOver(true);
-  }
-  function out() {
-    setIsOver(false);
+  function deleteItem(id) {
+    setItems(prevItems => {
+      return prevItems.filter((item, index) => {
+        return index !== id;
+      });
+    });
   }
 
   return (
@@ -27,21 +21,17 @@ function App() {
       <div className="heading">
         <h1>To-Do List</h1>
       </div>
-      <div className="form">
-        <input onChange={handleChange} type="text" value={inputText} />
-        <button
-          onClick={addItem}
-          onMouseOver={over}
-          onMouseOut={out}
-          style={{ backgroundColor: isOver ? "black" : "white" }}
-        >
-          <span>Add</span>
-        </button>
-      </div>
+      <InputArea onAdd={addItem} />
+
       <div>
         <ul>
-          {items.map(item => (
-            <li>{item}</li>
+          {items.map((item, index) => (
+            <ToDoItem
+              key={index}
+              id={index}
+              newItem={item}
+              onChecked={deleteItem}
+            />
           ))}
         </ul>
       </div>
