@@ -1,0 +1,52 @@
+import React, { useState } from "react";
+//import Item from "./Item.jsx";
+
+function App() {
+  const [inputText, setInputText] = useState("");
+  const [items, setItems] = useState([]);
+
+  function handleChange(event) {
+    const newValue = event.target.value;
+    setInputText(newValue);
+  }
+  function addItem() {
+    setItems(prevItems => [...prevItems, inputText]);
+    setInputText("");
+  }
+
+  const [isOver, setIsOver] = React.useState(false);
+  function over() {
+    setIsOver(true);
+  }
+  function out() {
+    setIsOver(false);
+  }
+
+  return (
+    <div className="container">
+      <div className="heading">
+        <h1>To-Do List</h1>
+      </div>
+      <div className="form">
+        <input onChange={handleChange} type="text" value={inputText} />
+        <button
+          onClick={addItem}
+          onMouseOver={over}
+          onMouseOut={out}
+          style={{ backgroundColor: isOver ? "black" : "white" }}
+        >
+          <span>Add</span>
+        </button>
+      </div>
+      <div>
+        <ul>
+          {items.map(item => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default App;
